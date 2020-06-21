@@ -1,0 +1,17 @@
+{
+    "name": "matheus/src",
+    "description": "sistema para teste",
+    "authors": [
+        {
+            "name": "Matheus Oliveira",
+            "email": "matheus.profissional9110@gmail.com"
+        }
+    ],
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Src\\":"src/"
+        }
+    }
+}
