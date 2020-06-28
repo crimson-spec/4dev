@@ -3,4 +3,6 @@
 require_once 'config/config.php';
 require_once 'vendor/autoload.php';
 
-$new = new Src\Classes\Pages('get');
+$method = $_SERVER['REQUEST_METHOD'];
+
+$new = new Src\Classes\Pages($method);

@@ -1,31 +1,16 @@
 <?php
 
-/**
- * Treating the variables
- */
-
 use Src\Controllers\ControllerRegister;
 
-if(isset($_POST['name'])){
-    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS);
-}else{
-    $name = null;
-}
+$json = file_get_contents('php://input');
+$data = json_decode($json, 1);
 
-if(isset($_POST['category'])){
-    $category = filter_input(INPUT_POST, 'category', FILTER_SANITIZE_SPECIAL_CHARS);
-}else{
-    $category = null;
-}
+$args =  [
+    "idCategory" => FILTER_SANITIZE_NUMBER_INT,
+    "name" => FILTER_SANITIZE_SPECIAL_CHARS,
+    "price" => FILTER_SANITIZE_SPECIAL_CHARS
+];
 
-if(isset($_POST['price'])){
-    $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_SPECIAL_CHARS);
-}else{
-    $price = null;
-}
+$register = filter_var_array($data, $args);
 
-$json = json_encode($_POST);
-
-echo $json;
-
-//$post = new ControllerRegister($category, $name, $price);
+$post = new ControllerRegister($register['idCategory'], $register['name'], $register['price']);
