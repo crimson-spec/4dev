@@ -13,4 +13,4 @@ $args =  [
 
 $register = filter_var_array($data, $args);
 
-$post = new ControllerRegister($register['idCategory'], $register['name'], $register['price']);
+$post = new ControllerRegister($register);
