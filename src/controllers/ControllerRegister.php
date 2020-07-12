@@ -10,7 +10,7 @@ class ControllerRegister extends Register{
 
     public function __construct($register)
     {
-        $return = array($register);
+        $return['data'] = array($register);
         $post = $this->setData($register['idCategory'], $register['name'], $register['price']);
 
         if($post){            
@@ -18,7 +18,7 @@ class ControllerRegister extends Register{
                 "status" => "success",
                 "dateNow" => (new DateTime('now', new DateTimeZone('America/Sao_paulo')))->format('d-m-Y, H:i:s')
             ];
-            array_push($return, $status);
+            $return['info'] = $status;
             echo json_encode($return);
         }else{
             $status = [
@@ -26,7 +26,7 @@ class ControllerRegister extends Register{
                 "message" => "dados insuficientes",
                 "dateNow" => (new DateTime('now', new DateTimeZone('America/Sao_paulo')))->format('d-m-Y, H:i:s')
             ];
-            array_push($return, $status);
+            $return['info'] = $status;
             echo json_encode($return);
         }
     }

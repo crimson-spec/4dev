@@ -9,28 +9,27 @@ use DateTime;
 
 class ControllerDelete extends Delete{
 
-    public function __construct($delete)
+    public function __construct($table = "products", $id = null)
     {
         $data = new Consult;
-        $data = $data->getOneData($delete['id']);
-        $return = $this->setUpdate($delete);
+        $data = $data->getOneData($id, $table);
+        ($data)?$response['data']=$data->fetch(\PDO::FETCH_OBJ):$response['data']=[null];
+        $return = $this->setDelete($id);
         if($return){
-            $response = array($data);
             $status = [
                 "status" => "success",
                 "message" => "Item deletado",
                 "dateNow" => (new DateTime('now', new DateTimeZone('America/Sao_paulo')))->format('d-m-Y, H:i:s')
             ];
-            array_push($response, $status);
+            $response['info'] = $status;
             echo json_encode($response);
         }else{
-            $response = array(null);
             $status = [
                 "status" => "failed",
                 "message" => "Erro ao deletar item",
                 "dateNow" => (new DateTime('now', new DateTimeZone('America/Sao_paulo')))->format('d-m-Y, H:i:s')
             ];
-            array_push($response, $status);
+            $response['info'] = $status;
             echo json_encode($response);
         }
     }

@@ -8,24 +8,29 @@ use Src\Models\Consult;
 
 class ControllerConsult extends Consult{
 
-    public function __construct($table = "products")
+    public function __construct($table = "products", $id = null)
     {
-        $data = $this->getData($table);
-        ($data)?$consult = $data->fetchAll(\PDO::FETCH_ASSOC):$consult = [null];
+        if($id){
+            $data = $this->getOneData($id, $table);
+            ($data)?$consult['data'] = $data->fetch(\PDO::FETCH_OBJ):$consult['data'] = [null];
+        }else{
+            $data = $this->getData($table);
+            ($data)?$consult['data'] = $data->fetchAll(\PDO::FETCH_OBJ):$consult['data'] = [null];
+        }
         if ($data){
             $status = [
                 "status" => "success",
                 "dateNow" => (new DateTime('now', new DateTimeZone('America/Sao_paulo')))->format('d-m-Y, H:i:s')
             ];
-            array_push($consult, $status);
+            $consult['info'] = $status;
             echo json_encode($consult);
         }else{
             $status = [
                 "status" => "failed",
-                "message" => "tabela inválida",
+                "message" => "tabela ou item inválido(s)",
                 "dateNow" => (new DateTime('now', new DateTimeZone('America/Sao_paulo')))->format('d-m-Y, H:i:s')
             ];
-            array_push($consult, $status);
+            $consult['info'] = $status;
             echo json_encode($consult);
         }
     }

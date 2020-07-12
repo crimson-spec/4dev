@@ -1,21 +1,21 @@
 <?php
 
 use Src\Controllers\ControllerDelete;
+use Src\Classes\Routes;
 
-$json = file_get_contents('php://input');
-$data = json_decode($json, 1);
+$table = Routes::getRoute(0);
+$id = Routes::getRoute(1);
 
-$delete = filter_var_array($data, FILTER_SANITIZE_SPECIAL_CHARS);
-
-if(empty($delete['id']) || empty($delete)){
-    $null = array(null);
+if(empty($table) || empty($id)){
+    $null['data'] = array(null);
+    empty($id)?$message='Dados insuficientes para deletar dados!':$message='url sintaxe error';
     $status = [
         "status" => "failed",
-        "message" => "Item não encontrado ou inexistente",
+        "message" => $message,
         "dateNow" => (new DateTime('now', new DateTimeZone('America/Sao_paulo')))->format('d-m-Y, H:i:s')
     ];
-    array_push($null, $status);
+    $null['info'] = $status;
     echo json_encode($null);
 }else{
-    $delete = new ControllerDelete($delete);
+    $delete = new ControllerDelete($table, $id);
 }

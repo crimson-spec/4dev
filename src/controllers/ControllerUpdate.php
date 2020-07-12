@@ -9,28 +9,27 @@ use DateTimeZone;
 
 class ControllerUpdate extends Update{
 
-    public function __construct($update)
+    public function __construct($update, $table, $id)
     {
-        $return = $this->setUpdate($update);
+        $return = $this->setUpdate($update, $id, $table);
         $data = new Consult;
-        $data = $data->getOneData($update['id']);
+        $data = $data->getOneData($id);
+        ($data)?$response['data']=$data->fetch(\PDO::FETCH_OBJ):$response['data']=[null];
         if($return){
-            $response = array($data);
             $status = [
                 "status" => "success",
                 "message" => "Item alterado",
                 "dateNow" => (new DateTime('now', new DateTimeZone('America/Sao_paulo')))->format('d-m-Y, H:i:s')
             ];
-            array_push($response, $status);
+            $response['info'] = $status;
             echo json_encode($response);
         }else{
-            $response = array(null);
             $status = [
                 "status" => "failed",
                 "message" => "Erro ao encontrar item",
                 "dateNow" => (new DateTime('now', new DateTimeZone('America/Sao_paulo')))->format('d-m-Y, H:i:s')
             ];
-            array_push($response, $status);
+            $response['info'] = $status;
             echo json_encode($response);
         }
     }

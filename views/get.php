@@ -6,10 +6,9 @@ use Src\Controllers\ControllerConsult;
  * Treating the variables
  */
 
-if(isset($_GET['get'])){
-    $table = filter_input(INPUT_GET, 'get', FILTER_SANITIZE_SPECIAL_CHARS);
-}else{
-    $table = "products";
-}
+use Src\Classes\Routes;
 
-$get = new ControllerConsult($table);
+$table = Routes::getRoute(0);
+$id = Routes::getRoute(1);
+
+$get = new ControllerConsult($table, $id);

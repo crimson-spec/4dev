@@ -10,9 +10,9 @@ class Consult extends Connect{
     public function getData($table = "products")
     {
         if($table == 'users_all'){
-            $this->data = $this->connection()->prepare("select u.id, u.first_name, u.last_name, 
-            u.email, u.document, a.street, a.number, a.complement from users u
-            inner join users_address a on u.id = a.user_id");
+            $this->data = $this->connection()->prepare("SELECT u.id, u.first_name, u.last_name, 
+            u.email, u.document, a.street, a.number, a.complement FROM users u
+            INNER JOIN users_address a ON u.id = a.user_id");
         }else{
             $this->data = $this->connection()->prepare("SELECT * FROM {$table}");
         }
@@ -31,7 +31,7 @@ class Consult extends Connect{
         $this->data->bindParam(":id", $id, \PDO::PARAM_INT);
         $this->data->execute();
         if($this->data->rowCount()>0){
-            return $this->data->fetch(\PDO::FETCH_ASSOC);
+            return $this->data;
         }else{
             return false;
         }
